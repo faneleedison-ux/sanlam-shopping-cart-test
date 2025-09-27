@@ -1,0 +1,30 @@
+# Maven target directory
+/target/
+
+# IntelliJ IDEA files
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# VS Code files
+.vscode/
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.class
+*.war
+*.ear
+
+# Spring Boot dev files
+/application.properties
+/application.yml
+
+# Backup files
+*~
