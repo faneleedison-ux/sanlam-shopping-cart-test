@@ -1,4 +1,5 @@
 # Shopping Cart Implementation - Sanlam Technical Test
+![Sanlam Logo](assets/sanlam-logo.jpg)
 
 **Candidate:** Fanelesibonge Mbuyazi  
 **Role:** Software Engineer I (Sanlam FinTech Technical Test)  

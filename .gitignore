@@ -17,14 +17,8 @@
 .DS_Store
 Thumbs.db
 
-# Temporary files
+# Compiled class files
 *.class
-*.war
-*.ear
-
-# Spring Boot dev files
-/application.properties
-/application.yml
 
 # Backup files
 *~
