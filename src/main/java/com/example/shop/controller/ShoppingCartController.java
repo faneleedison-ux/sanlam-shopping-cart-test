@@ -9,6 +9,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 
+/**
+ * REST controller that handles shopping cart operations.
+ * Exposes endpoints for adding items to a cart and retrieving cart totals.
+ */
 @RestController
 @RequestMapping("/shop")
 public class ShoppingCartController {
@@ -19,6 +23,26 @@ public class ShoppingCartController {
         this.cartService = cartService;
     }
 
+    /**
+     * POST /shop/{cartId}/items
+     *
+     * Adds an item to the specified shopping cart.
+     * 
+     * @param cartId   The unique ID of the cart.
+     * @param itemName Name of the item being added.
+     * @param price    Price of the item (must be non-negative).
+     * @param quantity Quantity of the item (must be greater than 0).
+     * 
+     * @return ResponseEntity containing CartResponse with the updated total and
+     *         status message.
+     * 
+     *         Example request:
+     *         POST /shop/123/items?itemName=Apple&price=10.50&quantity=2
+     * 
+     *         Validations:
+     *         - Quantity must be > 0
+     *         - Price must be >= 0
+     */
     @PostMapping("/{cartId}/items")
     public ResponseEntity<CartResponse> addItem(
             @PathVariable String cartId,
@@ -26,26 +50,49 @@ public class ShoppingCartController {
             @RequestParam BigDecimal price,
             @RequestParam int quantity) {
 
+        // Validate quantity must be positive
         if (quantity <= 0) {
             return ResponseEntity.badRequest()
                     .body(new CartResponse(cartId, BigDecimal.ZERO, "Quantity must be greater than 0"));
         }
+
+        // Validate price must not be negative
         if (price.compareTo(BigDecimal.ZERO) < 0) {
             return ResponseEntity.badRequest()
                     .body(new CartResponse(cartId, BigDecimal.ZERO, "Price must be non-negative"));
         }
 
+        // Add item to the cart and return updated total
         BigDecimal total = cartService.addItem(cartId, itemName, price, quantity);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(new CartResponse(cartId, total, "Item added successfully"));
     }
 
+    /**
+     * GET /shop/{cartId}/total
+     *
+     * Retrieves the total cost of all items in the specified cart.
+     * 
+     * @param cartId The unique ID of the cart.
+     * 
+     * @return ResponseEntity containing CartResponse with the cart's total and
+     *         status message.
+     * 
+     *         Example request:
+     *         GET /shop/123/total
+     * 
+     *         Possible outcomes:
+     *         - 200 OK with the total if the cart exists.
+     *         - 404 Not Found if the cart ID does not exist.
+     */
     @GetMapping("/{cartId}/total")
     public ResponseEntity<CartResponse> getTotal(@PathVariable String cartId) {
         try {
+            // Get the total from service layer
             BigDecimal total = cartService.getTotal(cartId);
             return ResponseEntity.ok(new CartResponse(cartId, total, "Cart total retrieved"));
         } catch (CartNotFoundException e) {
+            // If cart is not found, return 404 with error message
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(new CartResponse(cartId, BigDecimal.ZERO, e.getMessage()));
         }
