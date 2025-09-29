@@ -95,6 +95,13 @@ Response:
 ```
 
 ---
+## 📂 Postman Collection
+
+To make testing easier, a Postman collection is included:
+
+👉 [Sanlam_ShoppingCart_PostmanCollection.json](https://github.com/faneleedison-ux/sanlam-shopping-cart-test/tree/main/docs)
+
+You can import this collection into Postman and run predefined requests for all available endpoints.
 
 ## ✅ Notes
 - This project uses **in-memory storage** (HashMap) for simplicity.  
