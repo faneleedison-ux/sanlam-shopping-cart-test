@@ -11,7 +11,12 @@ import java.math.BigDecimal;
 
 /**
  * REST controller that handles shopping cart operations.
- * Exposes endpoints for adding items to a cart and retrieving cart totals.
+ * * Responsibilities:
+ * - Add items to a cart.
+ * - Retrieve the total cost of items in a cart.
+ * 
+ * * Note: Persistence (e.g., saving carts in a database) is not implemented
+ * since this project is designed as a technical test with in-memory storage.
  */
 @RestController
 @RequestMapping("/shop")
@@ -28,20 +33,9 @@ public class ShoppingCartController {
      *
      * Adds an item to the specified shopping cart.
      * 
-     * @param cartId   The unique ID of the cart.
-     * @param itemName Name of the item being added.
-     * @param price    Price of the item (must be non-negative).
-     * @param quantity Quantity of the item (must be greater than 0).
-     * 
-     * @return ResponseEntity containing CartResponse with the updated total and
-     *         status message.
-     * 
-     *         Example request:
-     *         POST /shop/123/items?itemName=Apple&price=10.50&quantity=2
-     * 
-     *         Validations:
-     *         - Quantity must be > 0
-     *         - Price must be >= 0
+     * Validations:
+     * - Quantity must be > 0
+     * - Price must be >= 0
      */
     @PostMapping("/{cartId}/items")
     public ResponseEntity<CartResponse> addItem(
@@ -73,17 +67,9 @@ public class ShoppingCartController {
      *
      * Retrieves the total cost of all items in the specified cart.
      * 
-     * @param cartId The unique ID of the cart.
-     * 
-     * @return ResponseEntity containing CartResponse with the cart's total and
-     *         status message.
-     * 
-     *         Example request:
-     *         GET /shop/123/total
-     * 
-     *         Possible outcomes:
-     *         - 200 OK with the total if the cart exists.
-     *         - 404 Not Found if the cart ID does not exist.
+     * Possible outcomes:
+     * - 200 OK with the total if the cart exists.
+     * - 404 Not Found if the cart ID does not exist.
      */
     @GetMapping("/{cartId}/total")
     public ResponseEntity<CartResponse> getTotal(@PathVariable String cartId) {
